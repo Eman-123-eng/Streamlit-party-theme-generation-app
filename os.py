@@ -5,9 +5,8 @@ import requests
 import streamlit as st
 from PIL import Image
 from dotenv import load_dotenv
-from diffusers import StableDiffusionPipeline, AutoencoderKL
+from diffusers import StableDiffusionPipeline
 import openai 
-from huggingface_hub import snapshot_download
 
 # --- Load environment variables ---
 load_dotenv()
@@ -69,7 +68,7 @@ def generate_party_image(occasion, color_theme, location):
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
-        torch_dtype=torch.float32
+        torch_dtype=torch.float16
     )
     pipe.to("cpu")
 

@@ -68,7 +68,7 @@ def generate_party_image(occasion, color_theme, location):
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
-        torch_dtype=torch.float16
+        torch_dtype=torch.float32
     )
     pipe.to("cpu")
 

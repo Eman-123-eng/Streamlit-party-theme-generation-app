@@ -7,7 +7,7 @@ from PIL import Image
 from dotenv import load_dotenv
 from diffusers import StableDiffusionPipeline
 import openai 
-
+from huggingface_hub import snapshot_download
 
 # --- Load environment variables ---
 load_dotenv()
@@ -64,12 +64,22 @@ def generate_invitation(occasion, color_theme, location, custom_song):
         return fallback_text
 
 def generate_party_image(occasion, color_theme, location):
-    model_id = "SG161222/Realistic_Vision_V5.1"
 
+    model_path = snapshot_download(
+    repo_id="SG161222/Realistic_Vision_V5.1_noVAE",
+    cache_dir="./hf_cache",
+    local_dir="./realistic_vision_model"
+)
+    # model_id = "SG161222/Realistic_Vision_V5.1"
+
+    # pipe = StableDiffusionPipeline.from_pretrained(
+    #     model_id,
+    #     torch_dtype=torch.float32
+    # )
     pipe = StableDiffusionPipeline.from_pretrained(
-        model_id,
-        torch_dtype=torch.float32
-    )
+    "./realistic_vision_model",
+    torch_dtype=torch.float16
+)
     
     pipe.to("cpu")
 

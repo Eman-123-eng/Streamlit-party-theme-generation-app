@@ -11,6 +11,7 @@ import openai
 # --- Load environment variables ---
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 
 # --- Spotify Credentials (Replace with actual credentials) ---
 CLIENT_ID = '7353d5351c904d3e853a9a5f6b3786f0'
@@ -69,7 +70,7 @@ def generate_party_image(occasion, color_theme, location):
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
         torch_dtype=torch.float16,  # Recommended for memory efficiency
-        # use_auth_token=huggingface_token if huggingface_token else None # Removed use_auth_token
+        use_auth_token=huggingface_token
     )
        
     pipe.to("cpu")

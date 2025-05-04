@@ -65,7 +65,7 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
 
-   model_id = 'CompVis/stable-diffusion-v1-4'
+    model_id = 'CompVis/stable-diffusion-v1-4'
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,

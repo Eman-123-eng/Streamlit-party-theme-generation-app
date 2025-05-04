@@ -65,31 +65,33 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
 
-   # 1. Download model without VAE
+   
+    # 1. Download base model
     model_path = snapshot_download(
         repo_id="SG161222/Realistic_Vision_V5.1_noVAE",
         cache_dir="./hf_cache",
         local_dir="./realistic_vision_model",
-        local_dir_use_symlinks=False
+        local_dir_use_symlinks=False  # Avoid SameFileError
     )
     
-    # 2. Download the VAE
+    # 2. Download VAE
     vae_path = snapshot_download(
         repo_id="stabilityai/sd-vae-ft-mse",
         cache_dir="./hf_cache",
         local_dir="./vae_model",
-        local_dir_use_symlinks=False
+        local_dir_use_symlinks=False  # Also apply here for consistency
     )
     
-    # 3. Load the VAE
+    # 3. Load VAE
     vae = AutoencoderKL.from_pretrained(vae_path, torch_dtype=torch.float16)
     
-    # 4. Load the full pipeline with the VAE injected
+    # 4. Load pipeline with VAE
     pipe = StableDiffusionPipeline.from_pretrained(
         model_path,
         vae=vae,
         torch_dtype=torch.float16
     )
+
 
     # pipe = StableDiffusionPipeline.from_pretrained(
     #     model_id,

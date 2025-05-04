@@ -5,7 +5,7 @@ import requests
 import streamlit as st
 from PIL import Image
 from dotenv import load_dotenv
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline, AutoencoderKL
 import openai 
 from huggingface_hub import snapshot_download
 
@@ -65,22 +65,36 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
 
+   # 1. Download model without VAE
     model_path = snapshot_download(
-    repo_id="SG161222/Realistic_Vision_V5.1_noVAE",
-    cache_dir="./hf_cache",
-    local_dir="./realistic_vision_model"
-)
-    # model_id = "SG161222/Realistic_Vision_V5.1"
+        repo_id="SG161222/Realistic_Vision_V5.1_noVAE",
+        cache_dir="./hf_cache",
+        local_dir="./realistic_vision_model",
+        local_dir_use_symlinks=False
+    )
+    
+    # 2. Download the VAE
+    vae_path = snapshot_download(
+        repo_id="stabilityai/sd-vae-ft-mse",
+        cache_dir="./hf_cache",
+        local_dir="./vae_model",
+        local_dir_use_symlinks=False
+    )
+    
+    # 3. Load the VAE
+    vae = AutoencoderKL.from_pretrained(vae_path, torch_dtype=torch.float16)
+    
+    # 4. Load the full pipeline with the VAE injected
+    pipe = StableDiffusionPipeline.from_pretrained(
+        model_path,
+        vae=vae,
+        torch_dtype=torch.float16
+    )
 
     # pipe = StableDiffusionPipeline.from_pretrained(
     #     model_id,
     #     torch_dtype=torch.float32
     # )
-    pipe = StableDiffusionPipeline.from_pretrained(
-    "./realistic_vision_model",
-    torch_dtype=torch.float16
-)
-    
     pipe.to("cpu")
 
     prompt = (

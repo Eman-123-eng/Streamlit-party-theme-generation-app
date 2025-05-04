@@ -64,7 +64,7 @@ def generate_invitation(occasion, color_theme, location, custom_song):
         return fallback_text
 
 def generate_party_image(occasion, color_theme, location):
-    model_id = "runwayml/stable-diffusion-v1-5"
+    model_id = "SG161222/Realistic_Vision_V5.1_noVAE"
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,

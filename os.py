@@ -65,12 +65,11 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
 
-    model_id = 'runwayml/stable-diffusion-v1-5'  # Using a publicly available model
+    model_id = 'stabilityai/sd-turbo'  # Using a publicly available model
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
-        torch_dtype=torch.float16,  # Recommended for memory efficiency
-        use_auth_token=huggingface_token
+        torch_dtype=torch.float16, 
     )
        
     pipe.to("cpu")

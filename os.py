@@ -65,11 +65,13 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
     model_id = "runwayml/stable-diffusion-v1-5"
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    dtype = torch.float16 if device == "cuda" else torch.float32
 
-    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=dtype)
-    pipe.to(device)
+    pipe = StableDiffusionPipeline.from_pretrained(
+        model_id,
+        torch_dtype=torch.float32
+    )
+    
+    pipe.to("cpu")
 
     prompt = (
         f"A beautiful and elegant {occasion} party decoration with a {color_theme} theme in an {location} setting. "

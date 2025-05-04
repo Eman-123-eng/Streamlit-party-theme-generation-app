@@ -64,12 +64,14 @@ def generate_invitation(occasion, color_theme, location, custom_song):
 
 def generate_party_image(occasion, color_theme, location):
 
-    model_id = 'CompVis/stable-diffusion-v1-4'
+    model_id = 'runwayml/stable-diffusion-v1-5'  # Using a publicly available model
 
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
-        torch_dtype=torch.float32
+        torch_dtype=torch.float16,  # Recommended for memory efficiency
+        # use_auth_token=huggingface_token if huggingface_token else None # Removed use_auth_token
     )
+       
     pipe.to("cpu")
 
     prompt = (

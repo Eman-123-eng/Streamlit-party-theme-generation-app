@@ -64,7 +64,7 @@ def generate_invitation(occasion, color_theme, location, custom_song):
         return fallback_text
 
 def generate_party_image(occasion, color_theme, location):
-    model_id = "SG161222/Realistic_Vision_V5.1_noVAE"
+    model_id = "runwayml/stable-diffusion-v1-5"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else torch.float32
 
